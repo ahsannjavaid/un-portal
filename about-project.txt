@@ -1,0 +1,17 @@
+Assalam-u-Alaikum!
+
+UN Portal is basically a student portal where students can see their Academic information (e.g., instructors, subjects enrolled, exams such as quizzes, Assignments, etc's marks).
+
+Following is the Summary / Flow of the Project:
+
+1) The instructor first makes his account if he has not signed up before (otherwise he will simply log in).
+2) The instructor will register his students one by one and assign each student a unique student ID.
+3) After registering the students, he can post marks of different activities done in class against each student's record.
+4) Then students can log in to their accounts through the Student ID and password provided by their instructor.
+5) Students can check their received marks in different subjects enrolled by their instructors.
+
+
+CRUD Functionality
+
+- Both students and instructors can edit their account info
+- Admin authorities are also added (The only admin can delete any instructor)
