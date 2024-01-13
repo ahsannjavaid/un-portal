@@ -1,10 +1,29 @@
-# Getting Started with Create React App
+# Server: Node.js, Express.js and MongoDB
+
+## Available Scripts
+
+First of all install dependencies by typing following command in back-end directory:
+
+### `npm install`
+
+In the back-end directory, you can run:
+
+### `npm start`
+
+Runs the server in the development mode at URL [http://localhost:5000](http://localhost:5000).
+
+
+# Client: Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
-In the project directory, you can run:
+First of all install dependencies by typing following command in front-end directory:
+
+### `npm install`
+
+In the front-end directory, you can run:
 
 ### `npm start`
 
