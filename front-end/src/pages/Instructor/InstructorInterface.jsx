@@ -1,6 +1,6 @@
 import React from 'react'
-import Navbar from '../components/Navbar'
-import Carousel from '../components/Carousel'
+import Navbar from '../../components/Navbar'
+import Carousel from '../../components/Carousel'
 
 const InstructorInterface = () => {
   const firstName = localStorage.getItem('firstName')

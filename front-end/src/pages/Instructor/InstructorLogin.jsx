@@ -1,11 +1,12 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { BASE_URL } from '../services/helper'
+import { BASE_URL } from '../../services/helper'
+import LoginForm from './Views/LoginForm'
 
 const InstructorLogin = () => {
-
   const navigate = useNavigate()
+  
   const [instructors, setInstructors] = useState([])
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -63,19 +64,13 @@ const InstructorLogin = () => {
                 <div className="row no-gutters mt-0">
                   <div className="col-lg-6">
                     <div className="p-5 border" style={{ color: '#4D3189' }}>
-                      <form>
-                        <div className="form-group">
-                          <h6>Email address</h6>
-                          <input onChange={(event) => setEmail(event.target.value)} value={email} type="email" className="form-control mb-3" placeholder='name@host.domain' />
-                        </div>
-                        <div className="form-group mb-5">
-                          <h6>Password</h6>
-                          <input onChange={(event) => setPassword(event.target.value)} value={password} type="password" className="form-control" />
-                        </div>
-                        <div className="d-grid mt-3">
-                          <button onClick={loginCheck} className="btn btn-outline fw-bold" type="submit" style={{ color: '#4D3189', borderColor: '#4D3189' }}>LOGIN</button>
-                        </div>
-                      </form>
+                      <LoginForm 
+                        email={email}
+                        setEmail={setEmail}
+                        password={password}
+                        setPassword={setPassword}
+                        loginCheck={loginCheck}
+                      />
                     </div>
                   </div>
                   <div className="col-lg-6 d-none d-lg-inline-block">

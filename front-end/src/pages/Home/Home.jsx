@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import Card from "../components/Card";
+import Card from "./Views/Card";
 
 const Home = () => {
   let instructorImage = "./images/instructor.jpg"
