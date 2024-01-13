@@ -22,7 +22,7 @@ UN Portal is basically a student portal where students can see their Academic in
 
 ## Available Scripts
 
-First of all install dependencies by typing following command in back-end directory:
+First of all install dependencies by typing following command in **back-end** directory:
 
 ### `npm install`
 
@@ -39,7 +39,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
-First of all install dependencies by typing following command in front-end directory:
+First of all install dependencies by typing following command in **front-end** directory:
 
 ### `npm install`
 
