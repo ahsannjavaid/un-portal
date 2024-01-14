@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { BASE_URL } from "../../services/helper";
-import Navbar from "../../components/Navbar";
+import { BASE_URL } from "../../../services/helper";
+import Navbar from "../../../components/Navbar";
 import ExamTypeNavigation from "./Views/ExamTypeNavigation";
 import StudentsMarksTable from "./Views/StudentsMarksTable";
 import StudentsActionTable from "./Views/StudentsActionTable";

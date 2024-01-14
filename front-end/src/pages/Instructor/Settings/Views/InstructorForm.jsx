@@ -42,7 +42,7 @@ export default function InstructorForm({
         <fieldset disabled>
           <div>
             <h6>Email address</h6>
-            <input type="email" value={email} className="form-control" />
+            <input readOnly type="email" value={email} className="form-control" />
           </div>
         </fieldset>
       </div>

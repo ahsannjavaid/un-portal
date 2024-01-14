@@ -3,20 +3,20 @@ import "./styling/instructorLogin.css";
 import "./App.css";
 import { HashRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
-import Student from "./pages/Student";
-import Instructor from "./pages/Instructor/Instructor";
-import InstructorLogin from "./pages/Instructor/InstructorLogin";
-import InstructorInterface from "./pages/Instructor/InstructorInterface";
-import Admin from "./pages/Admin";
-import Account from "./pages/Instructor/Account";
-import AddStudent from "./pages/Instructor/AddStudent";
-import ViewStudents from "./pages/Instructor/ViewStudents";
-import PostMarks from "./pages/PostMarks";
-import StudentInterface from "./pages/StudentInterface";
-import AccountS from "./pages/AccountS";
-import Marks from "./pages/Marks";
+import Student from "./pages/Student/Login/Student";
+import Instructor from "./pages/Instructor/Signup/Instructor";
+import InstructorLogin from "./pages/Instructor/Login/InstructorLogin";
+import InstructorInterface from "./pages/Instructor/Home/InstructorInterface";
+import Admin from "./pages/Admin/Admin";
+import Account from "./pages/Instructor/Settings/Account";
+import AddStudent from "./pages/Instructor/AddStudent/AddStudent";
+import ViewStudents from "./pages/Instructor/YourStudents/ViewStudents";
+import PostMarks from "./pages/Instructor/PostMarks/PostMarks";
+import StudentInterface from "./pages/Student/Home/StudentInterface";
+import AccountS from "./pages/Student/Settings/AccountS";
+import Marks from "./pages/Student/Marks/Marks";
 import Footer from "./components/Footer";
-import Error from "./pages/Error";
+import Error from "./pages/Error/Error";
 
 function App() {
   return (

@@ -1,7 +1,9 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { BASE_URL } from '../services/helper'
+import { useNavigate } from 'react-router-dom'
+import { BASE_URL } from '../../../services/helper'
+import LoginForm from './Views/LoginForm'
+import Header from '../../../components/Header'
 
 const Student = () => {
   const navigate = useNavigate()
@@ -47,16 +49,7 @@ const Student = () => {
 
   return (
     <div className="container">
-      <div className='row'>
-        <div className='col'>
-          <div className='text-center'>
-            <Link to={"/"}>
-              <img className='img mt-4 mb-2' src='./images/logo_0.0.png' alt='logo' height='30px' width='120px' />
-            </Link>
-          </div>
-        </div>
-      </div>
-      <hr />
+      <Header />
       <h4 className='text text-start mt-4 mb-5'>| Student LOGIN</h4>
       <div className="row justify-content-center">
         <div className="col-xl-10">
@@ -65,19 +58,13 @@ const Student = () => {
               <div className="row no-gutters mt-0">
                 <div className="col-lg-6">
                   <div className="p-5 border" style={{ color: '#4D3189' }}>
-                    <form>
-                      <div className="form-group">
-                        <h6>Student ID</h6>
-                        <input onChange={(event) => setStudentID(event.target.value)} value={studentID} type="number" className="form-control mb-3" placeholder='9999' />
-                      </div>
-                      <div className="form-group mb-5">
-                        <h6>Password</h6>
-                        <input onChange={(event) => setPassword(event.target.value)} value={password} type="password" className="form-control" />
-                      </div>
-                      <div className="d-grid mt-3">
-                        <button onClick={CheckStudent} className="btn btn-outline fw-bold" type="button" style={{ color: '#4D3189', borderColor: '#4D3189' }}>LOGIN</button>
-                      </div>
-                    </form>
+                    <LoginForm 
+                      studentID={studentID}
+                      setStudentID={setStudentID}
+                      password={password}
+                      setPassword={setPassword}
+                      CheckStudent={CheckStudent}
+                    />
                   </div>
                 </div>
                 <div className="col-lg-6 d-none d-lg-inline-block">

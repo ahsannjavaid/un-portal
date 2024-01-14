@@ -1,8 +1,9 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { BASE_URL } from '../../services/helper'
+import { useNavigate } from 'react-router-dom'
+import { BASE_URL } from '../../../services/helper'
 import LoginForm from './Views/LoginForm'
+import Header from '../../../components/Header'
 
 const InstructorLogin = () => {
   const navigate = useNavigate()
@@ -46,16 +47,7 @@ const InstructorLogin = () => {
   return (
     <>
       <div className="container">
-        <div className='row'>
-          <div className='col'>
-            <div className='text-center'>
-              <Link to={"/"}>
-                <img className='img mt-4 mb-2' src='./images/logo_0.0.png' alt='logo' height='30px' width='120px' />
-              </Link>
-            </div>
-          </div>
-        </div>
-        <hr />
+        <Header />
         <h4 className='text text-start mt-4 mb-5'>| Instructor LOGIN</h4>
         <div className="row justify-content-center">
           <div className="col-xl-10">

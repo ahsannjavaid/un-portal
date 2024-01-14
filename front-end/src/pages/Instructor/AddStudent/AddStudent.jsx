@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL } from "../../services/helper";
-import Navbar from "../../components/Navbar";
+import { BASE_URL } from "../../../services/helper";
+import Navbar from "../../../components/Navbar";
 import StudentRegistrationForm from "./Views/StudentRegistrationForm";
 
 const AddStudent = () => {
