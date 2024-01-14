@@ -1,64 +1,48 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { BASE_URL } from '../../../services/config'
-import LoginForm from './Views/LoginForm'
-import Header from '../../../components/Header'
+import React from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import LoginForm from "./Views/LoginForm";
+import Header from "../../../components/Header";
+import { fetchResponse } from "../../../services/service";
+import { studentEndpoints } from "../../../services/endpoints/studentEndpoints";
 
 const Student = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const [students, setStudents] = useState([])
-  const [studentID, setStudentID] = useState('')
-  const [password, setPassword] = useState("")
-  let [check, setCheck] = useState(true)
+  const [studentID, setStudentID] = useState("");
+  const [password, setPassword] = useState("");
 
-  localStorage.clear()
+  localStorage.clear();
 
-  const getStudents = async () => {
-    let result = await fetch(`${BASE_URL}students-details`)
-    if (result) {
-      result = await result.json()
-      setStudents(result)
-    }
-    else {
-      console.log("Marks not found!")
-    }
-  }
-
-  useEffect(() => {
-    getStudents()
-  }, [])
-
-  const CheckStudent = () => {
-    for (let i = 0; i < students.length; i++) {
-      if (students[i].studentID === parseInt(studentID)) {
-        if (students[i].password === password) {
-          localStorage.setItem('fname', students[i].fname)
-          localStorage.setItem('studentID', students[i].studentID)
-          check = false
-          setCheck(check)
-          navigate('/student-interface')
-        }
+  const CheckStudent = async () => {
+    try {
+      const data = await fetchResponse(studentEndpoints.loginStudent(), 1, {
+        studentID,
+        password,
+      });
+      alert(data?.message);
+      if (data.success) {
+        localStorage.setItem("fname", data.data.fname);
+        localStorage.setItem("studentID", data.data.studentID);
+        navigate("/student-interface");
       }
+    } catch (error) {
+      console.log(error);
     }
-    if (check) {
-      alert("Incorrect credentials!")
-    }
-  }
+  };
 
   return (
     <div className="container">
       <Header />
-      <h4 className='text text-start mt-4 mb-5'>| Student LOGIN</h4>
+      <h4 className="text text-start mt-4 mb-5">| Student LOGIN</h4>
       <div className="row justify-content-center">
         <div className="col-xl-10">
           <div className="card border-0">
             <div className="card-body p-0">
               <div className="row no-gutters mt-0">
                 <div className="col-lg-6">
-                  <div className="p-5 border" style={{ color: '#4D3189' }}>
-                    <LoginForm 
+                  <div className="p-5 border" style={{ color: "#4D3189" }}>
+                    <LoginForm
                       studentID={studentID}
                       setStudentID={setStudentID}
                       password={password}
@@ -71,7 +55,12 @@ const Student = () => {
                   <div className="account-block rounded-right">
                     <div className="overlay rounded-right" />
                     <div className="account-testimonial">
-                      <p className="lead text-white"><i>"The seeking of knowledge is obligatory for every Muslim."</i></p>
+                      <p className="lead text-white">
+                        <i>
+                          "The seeking of knowledge is obligatory for every
+                          Muslim."
+                        </i>
+                      </p>
                       <p>- Prophet Muhammad (PBUH)</p>
                       <p>(Al-Tirmidhi, Hadith 74)</p>
                     </div>
@@ -83,7 +72,7 @@ const Student = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Student
+export default Student;

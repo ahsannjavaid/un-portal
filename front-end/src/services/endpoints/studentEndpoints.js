@@ -1,21 +1,13 @@
 import { BASE_URL } from "../config";
 
-const title = "student/";
-
 export const studentEndpoints = {
-  loginStudent: () => `${BASE_URL}${title}login`,
+  loginStudent: () => `${BASE_URL}login-student`,
 
-  registerStudent: () => `${BASE_URL}${title}register`,
+  registerStudent: () => `${BASE_URL}students`,
 
-  getStudents: () => `${BASE_URL}${title}getAll`,
+  getStudents: () => `${BASE_URL}students-details`,
 
-  getSingleStudent: (id) => `${BASE_URL}${title}get/${id}`,
+  editStudent: (id) => `${BASE_URL}students-details/${id}`,
 
-  getAcademics: (id) => `${BASE_URL}${title}getAcademics/${id}`,
-
-  getAttendances: (id) => `${BASE_URL}${title}getAttendances/${id}`,
-
-  editStudent: (id) => `${BASE_URL}${title}edit/${id}`,
-
-  deleteSingleStudent: (id) => `${BASE_URL}${title}delete/${id}`,
+  deleteSingleStudent: (id) => `${BASE_URL}students-details/${id}`,
 };
