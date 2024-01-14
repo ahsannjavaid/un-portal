@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL } from "../../../services/helper";
+import { BASE_URL } from "../../../services/config";
 import SignupForm from "./Views/SignupForm";
 import Instructions from "./Views/Instructions";
 import Header from "../../../components/Header";

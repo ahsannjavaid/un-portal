@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL } from "../../../services/helper";
+import { BASE_URL } from "../../../services/config";
 import Navbar from "../../../components/Navbar";
 import StudentRegistrationForm from "./Views/StudentRegistrationForm";
 

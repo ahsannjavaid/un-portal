@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { BASE_URL } from '../../../services/helper'
+import { BASE_URL } from '../../../services/config'
 import LoginForm from './Views/LoginForm'
 import Header from '../../../components/Header'
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { BASE_URL } from "../../services/helper";
+import { BASE_URL } from "../../services/config";
 import InstructorsTable from "./Views/InstructorsTable";
 import PaginationNavigation from "./Views/PaginationNavigation";
 import Header from "../../components/Header";

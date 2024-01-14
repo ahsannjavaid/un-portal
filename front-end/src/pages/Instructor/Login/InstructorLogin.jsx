@@ -1,62 +1,48 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { BASE_URL } from '../../../services/helper'
-import LoginForm from './Views/LoginForm'
-import Header from '../../../components/Header'
+import React from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import LoginForm from "./Views/LoginForm";
+import Header from "../../../components/Header";
+import { instructorEndpoints } from "../../../services/endpoints/instructorEndpoints";
+import { fetchResponse } from "../../../services/service";
 
 const InstructorLogin = () => {
-  const navigate = useNavigate()
-  
-  const [instructors, setInstructors] = useState([])
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  let [check, setCheck] = useState(true)
+  const navigate = useNavigate();
 
-  const getInstructors = async () => {
-    let result = await fetch(`${BASE_URL}instructors-details`)
-    result = await result.json()
-    if (result) {
-      setInstructors(result)
-    }
-    else {
-      console.log("Instructors not found!")
-    }
-  }
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  useEffect(() => {
-    getInstructors()
-  }, [])
-
-  const loginCheck = () => {
-    for (let i = 0; i < instructors.length; i++) {
-      if (instructors[i].email === email && instructors[i].password === password) {
-        localStorage.setItem('firstName', instructors[i].fname)
-        localStorage.setItem('email', instructors[i].email)
-        localStorage.setItem('subject', instructors[i].subject)
-        check = false
-        setCheck(check)
+  const loginCheck = async () => {
+    try {
+      const data = await fetchResponse(instructorEndpoints.loginInstructor(), 1, {
+        email,
+        password,
+      });
+      alert(data?.message);
+      if (data.success) {
+        localStorage.setItem("firstName", data.data.fname);
+        localStorage.setItem("email", data.data.email);
+        localStorage.setItem("subject", data.data.subject);
         navigate("/instructor-interface");
       }
+    } catch (error) {
+      console.log(error);
     }
-    if (check) {
-      alert("Incorrect Credentials!")
-    }
-  }
+  };
 
   return (
     <>
       <div className="container">
         <Header />
-        <h4 className='text text-start mt-4 mb-5'>| Instructor LOGIN</h4>
+        <h4 className="text text-start mt-4 mb-5">| Instructor LOGIN</h4>
         <div className="row justify-content-center">
           <div className="col-xl-10">
             <div className="card border-0">
               <div className="card-body p-0">
                 <div className="row no-gutters mt-0">
                   <div className="col-lg-6">
-                    <div className="p-5 border" style={{ color: '#4D3189' }}>
-                      <LoginForm 
+                    <div className="p-5 border" style={{ color: "#4D3189" }}>
+                      <LoginForm
                         email={email}
                         setEmail={setEmail}
                         password={password}
@@ -70,7 +56,12 @@ const InstructorLogin = () => {
                       <div className="overlay rounded-right" />
                       <div className="account-testimonial">
                         <h4 className="text-white mb-4">A Teacher</h4>
-                        <p className="lead text-white"><i>"Everything seeks forgiveness for the teacher of virtue, even fish in the sea."</i></p>
+                        <p className="lead text-white">
+                          <i>
+                            "Everything seeks forgiveness for the teacher of
+                            virtue, even fish in the sea."
+                          </i>
+                        </p>
                         <p>- Prophet Muhammad (PBUH)</p>
                         <p>(Musnad al-Bazzar)</p>
                       </div>
@@ -83,7 +74,7 @@ const InstructorLogin = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default InstructorLogin
+export default InstructorLogin;

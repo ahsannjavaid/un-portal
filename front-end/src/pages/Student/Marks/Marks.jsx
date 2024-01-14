@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { BASE_URL } from "../../../services/helper";
+import { BASE_URL } from "../../../services/config";
 import Navbar from "../../../components/Navbar";
 import SubjectNavigation from "./Views/SubjectNavigation";
 import StudentMarksTable from "./Views/StudentMarksTable";

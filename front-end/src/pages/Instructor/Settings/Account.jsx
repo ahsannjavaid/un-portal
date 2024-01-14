@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BASE_URL } from "../../../services/helper";
+import { BASE_URL } from "../../../services/config";
 import Navbar from "../../../components/Navbar";
 import InstructorForm from "./Views/InstructorForm";
 import InstructorInformation from "./Views/InstructorInformation";
