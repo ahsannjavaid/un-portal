@@ -1,10 +1,11 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL } from "../../../services/config";
 import SignupForm from "./Views/SignupForm";
 import Instructions from "./Views/Instructions";
 import Header from "../../../components/Header";
+import {instructorEndpoints} from "../../../services/endpoints/instructorEndpoints";
+import {fetchResponse} from "../../../services/service";
 
 const Instructor = () => {
   const navigate = useNavigate();
@@ -16,23 +17,19 @@ const Instructor = () => {
   const [subject, setSubject] = useState("");
 
   localStorage.clear();
+
   const registerInstructor = async () => {
-    if (fname && lname && email && password && subject) {
-      alert("You are registered successfully!");
-      await fetch(`${BASE_URL}instructors`, {
-        method: "post",
-        body: JSON.stringify({ fname, lname, email, password, subject }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      localStorage.setItem("firstName", fname);
-      localStorage.setItem("email", email);
-      localStorage.setItem("subject", subject);
-      navigate("/instructor-interface");
-      window.location.reload();
-    } else {
-      alert("You have to fill the form in order to register!");
+    try {
+      const data = await fetchResponse(instructorEndpoints.registerInstructor(), 1, {fname, lname, email, password, subject})
+      alert(data.message);
+      if (data.success) {
+        localStorage.setItem("firstName", fname);
+          localStorage.setItem("email", email);
+          localStorage.setItem("subject", subject);
+          navigate("/instructor-interface");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
