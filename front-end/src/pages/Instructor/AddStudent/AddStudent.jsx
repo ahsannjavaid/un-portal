@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL } from "../../../services/config";
 import Navbar from "../../../components/Navbar";
 import StudentRegistrationForm from "./Views/StudentRegistrationForm";
+import { fetchResponse } from "../../../services/service";
+import { studentEndpoints } from "../../../services/endpoints/studentEndpoints";
 
 const AddStudent = () => {
   const navigate = useNavigate();
@@ -17,26 +18,22 @@ const AddStudent = () => {
   const [password, setPassword] = useState("");
 
   const registerStudent = async () => {
-    if (fname && studentID && password && instructorEmail) {
-      alert("Successfully registered!");
-      navigate("/view-students");
-      await fetch(`${BASE_URL}students`, {
-        method: "post",
-        body: JSON.stringify({
-          fname,
-          lname,
-          studentID,
-          password,
-          instructorEmail,
-          instructorSubject,
-          marks,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
+    try {
+      const data = await fetchResponse(studentEndpoints.registerStudent(), 1, {
+        fname,
+        lname,
+        studentID,
+        password,
+        instructorEmail,
+        instructorSubject,
+        marks,
       });
-    } else {
-      alert("You have to fill the form in order to register student!");
+      alert(data.message);
+      if (data.success) {
+        navigate("/view-students");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

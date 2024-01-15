@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { BASE_URL } from "../../../services/config";
 import Navbar from "../../../components/Navbar";
 import ExamTypeNavigation from "./Views/ExamTypeNavigation";
 import StudentsMarksTable from "./Views/StudentsMarksTable";
 import StudentsActionTable from "./Views/StudentsActionTable";
 import ViewOptions from "./Views/ViewOptions";
+import { fetchResponse } from "../../../services/service";
+import { studentEndpoints } from "../../../services/endpoints/studentEndpoints";
+import { examEndpoints } from "../../../services/endpoints/examEndpoints";
 
 const ViewStudents = () => {
   const instructorEmail = localStorage.getItem("email");
 
-  const [students, setStudents] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
   let [marks, setMarks] = useState([]);
   const [requiredMarks, setRequiredMarks] = useState([]);
@@ -18,85 +19,68 @@ const ViewStudents = () => {
   const [choice, setChoice] = useState(0);
   let [index, setIndex] = useState(0);
 
-  const getStudents = async () => {
-    let result = await fetch(`${BASE_URL}students-details`);
-    result = await result.json();
-    if (result) {
-      setStudents(result);
-    } else {
-      console.log("Check your Internet connection!");
-    }
-  };
-
-  const getMarks = async () => {
-    let result = await fetch(`${BASE_URL}marks-details`);
-    if (result) {
-      result = await result.json();
-      setMarks(result);
-    } else {
-      console.log("Marks not found!");
-    }
-  };
-
   useEffect(() => {
+    async function getStudents() {
+      try {
+        const data = await fetchResponse(
+          studentEndpoints.getParticularStudents(instructorEmail),
+          0,
+          null
+        );
+        setSelectedStudents(data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    async function getMarks() {
+      try {
+        const data = await fetchResponse(
+          examEndpoints.getParticularMarks(instructorEmail),
+          0,
+          null
+        );
+        setMarks(data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
     getStudents();
     getMarks();
-  }, []);
+  }, [instructorEmail]);
 
-  const viewStudents = () => {
-    let a = 0;
-    let duplciateArray = [];
-    for (let i = 0; i < students.length; i++) {
-      if (students[i].instructorEmail === instructorEmail) {
-        duplciateArray[a++] = { ...students[i] };
-      }
-    }
-    setSelectedStudents(duplciateArray);
+  function viewStudents() {
     setChoice(1);
-  };
+  }
 
-  const ViewRecord = () => {
-    let a = 0,
-      z = 0,
-      check = false;
-    let duplciateArray = [];
-
-    for (let i = 0; i < students.length; i++) {
-      if (students[i].instructorEmail === instructorEmail) {
-        duplciateArray[z++] = { ...students[i] };
-      }
-    }
-    setSelectedStudents(duplciateArray);
+  function ViewRecord() {
+    let a = 0, check = false;
 
     for (let i = 0; i < marks.length; i++) {
-      if (marks[i].instructorEmail === instructorEmail) {
-        requiredMarks[a] = { ...marks[i] };
-        for (let j = 0; j < requiredMarks[a].selectedStudents.length; j++) {
-          check = false;
-          for (let k = 0; k < duplciateArray.length; k++) {
-            if (
-              requiredMarks[a].selectedStudents[j].studentID ===
-              duplciateArray[k].studentID
-            ) {
-              check = true;
-              break;
-            }
-          }
-          if (!check) {
-            // deleting element from array... splice(ind,howMany)
-            requiredMarks[a].selectedStudents.splice(j, 1);
+      requiredMarks[a] = { ...marks[i] };
+      for (let j = 0; j < requiredMarks[a].selectedStudents.length; j++) {
+        check = false;
+        for (let k = 0; k < selectedStudents.length; k++) {
+          if (
+            requiredMarks[a].selectedStudents[j].studentID ===
+            selectedStudents[k].studentID
+          ) {
+            check = true;
+            break;
           }
         }
-        a++;
+        if (!check) {
+          // deleting element from array... splice(ind,howMany)
+          requiredMarks[a].selectedStudents.splice(j, 1);
+        }
       }
+      a++;
     }
     if (requiredMarks.length) {
       setRequiredMarks(requiredMarks);
-      examTypeArray = { ...requiredMarks[index] };
-      setExamTypeArray(examTypeArray);
+      setExamTypeArray({ ...requiredMarks[index] });
       setChoice(2);
     }
-  };
+  }
 
   const ActivityNavDec = () => {
     if (index > 0) {
@@ -116,12 +100,16 @@ const ViewStudents = () => {
     setExamTypeArray(examTypeArray);
   };
 
-  const DeleteStudent = (id) => {
-    fetch(`${BASE_URL}student-details/${id}`, {
-      method: "delete",
-    });
-    alert("Successfully deleted!");
-    window.location.reload();
+  const DeleteStudent = async (id) => {
+    try {
+      const data = await fetchResponse(studentEndpoints.deleteSingleStudent(id), 3, null)
+      alert(data.message);
+      if (data.success) {
+        setSelectedStudents(selectedStudents.filter(std => std.id !== id));
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   if (choice === 0) {

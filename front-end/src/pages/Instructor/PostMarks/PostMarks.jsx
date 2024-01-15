@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { BASE_URL } from "../../../services/config";
+import React, { useState } from "react";
 import Navbar from "../../../components/Navbar";
 import CharacteristicsForm from "./Views/CharacteristicsForm";
 import StudentsTable from "./Views/StudentsTable";
+import { fetchResponse } from "../../../services/service";
+import { examEndpoints } from "../../../services/endpoints/examEndpoints";
+import { studentEndpoints } from "../../../services/endpoints/studentEndpoints";
 
 const PostMarks = () => {
   let obtWeightage = "";
@@ -10,60 +12,40 @@ const PostMarks = () => {
   const instructorEmail = localStorage.getItem("email");
   const instructorSubject = localStorage.getItem("subject");
 
-  const [students, setStudents] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [examType, setExamType] = useState("");
   const [activityNumber, setActivityNumber] = useState(null);
   const [weightage, setWeightage] = useState(null);
   const [points, setPoints] = useState(null);
 
-  const getStudents = async () => {
-    let result = await fetch(`${BASE_URL}students-details`);
-    result = await result.json();
-    if (result) {
-      setStudents(result);
-    } else {
-      console.log("Check your Internet connection!");
+  const viewStudents = async () => {
+    try {
+      const data = await fetchResponse(
+        studentEndpoints.getParticularStudents(instructorEmail),
+        0,
+        null
+      );
+      setSelectedStudents(data.data);
+    } catch (error) {
+      console.log(error);
     }
-  };
-
-  useEffect(() => {
-    getStudents();
-  }, []);
-
-  const viewStudents = () => {
-    let a = 0;
-    let duplciateArray = [];
-    for (let i = 0; i < students.length; i++) {
-      if (students[i].instructorEmail === instructorEmail) {
-        duplciateArray[a++] = { ...students[i] };
-      }
-    }
-    setSelectedStudents(duplciateArray);
   };
 
   const PostResult = async () => {
-    if (examType && weightage && points && selectedStudents) {
-      await fetch(`${BASE_URL}marks`, {
-        method: "post",
-        body: JSON.stringify({
-          examType,
-          weightage,
-          obtWeightage,
-          points,
-          activityNumber,
-          instructorEmail,
-          instructorSubject,
-          selectedStudents,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
+    try {
+      const data = await fetchResponse(examEndpoints.postMarks(), 1, {
+        examType,
+        weightage,
+        obtWeightage,
+        points,
+        activityNumber,
+        instructorEmail,
+        instructorSubject,
+        selectedStudents,
       });
-      alert("Successfully posted!");
-      window.location.reload();
-    } else {
-      alert("Every field except Activity Number is mandatory!");
+      alert(data.message);
+    } catch (error) {
+      console.log(error);
     }
   };
 
