@@ -105,7 +105,8 @@ const ViewStudents = () => {
       const data = await fetchResponse(studentEndpoints.deleteSingleStudent(id), 3, null)
       alert(data.message);
       if (data.success) {
-        setSelectedStudents(selectedStudents.filter(std => std.id !== id));
+        let duplicateArray = [...selectedStudents];
+        setSelectedStudents(duplicateArray.filter(std => std.id !== id));
       }
     } catch (error) {
       console.log(error);
