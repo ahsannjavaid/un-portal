@@ -53,7 +53,8 @@ const ViewStudents = () => {
   }
 
   function ViewRecord() {
-    let a = 0, check = false;
+    let a = 0,
+      check = false;
 
     for (let i = 0; i < marks.length; i++) {
       requiredMarks[a] = { ...marks[i] };
@@ -102,88 +103,49 @@ const ViewStudents = () => {
 
   const DeleteStudent = async (id) => {
     try {
-      const data = await fetchResponse(studentEndpoints.deleteSingleStudent(id), 3, null)
+      const data = await fetchResponse(
+        studentEndpoints.deleteSingleStudent(id),
+        3,
+        null
+      );
       alert(data.message);
       if (data.success) {
         let duplicateArray = [...selectedStudents];
-        setSelectedStudents(duplicateArray.filter(std => std.id !== id));
+        setSelectedStudents(duplicateArray.filter((std) => std._id !== id));
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  if (choice === 0) {
-    return (
-      <>
-        <Navbar tab={3} navNo={1} />
-        <div className="container text-center mt-5">
-          <ViewOptions viewStudents={viewStudents} ViewRecord={ViewRecord} />
-        </div>
-      </>
-    );
-  } else if (choice === 1) {
-    return (
-      <>
-        <Navbar tab={3} navNo={1} />
-        <div className="container text-center mt-5">
-          <div className="row">
-            <div className="col col-6 text-start">
-              <h4 className="fw-bold me-5">| YOUR STUDENTS</h4>
-            </div>
-            <div className="col text-end">
-              <ViewOptions
-                viewStudents={viewStudents}
-                ViewRecord={ViewRecord}
-              />
-            </div>
-          </div>
-          <br />
-          <StudentsActionTable
-            selectedStudents={selectedStudents}
-            DeleteStudent={DeleteStudent}
-          />
-        </div>
-      </>
-    );
-  } else if (choice === 2) {
-    return (
-      <>
-        <Navbar tab={3} navNo={1} />
-        <div className="container text-center mt-5">
-          <div className="row">
-            <div className="col col-6 text-start">
-              <h4 className="fw-bold me-5">| RECORD</h4>
-            </div>
-            <div className="col text-end">
-              <ViewOptions
-                viewStudents={viewStudents}
-                ViewRecord={ViewRecord}
-              />
-            </div>
-          </div>
-          <br />
-          <div className="mb-4">
-            <ExamTypeNavigation
-              ActivityNavDec={ActivityNavDec}
-              ActivityNavInc={ActivityNavInc}
+  return (
+    <>
+      <Navbar tab={3} navNo={1} />
+      <div className="container text-center mt-3 vh-100">
+        <ViewOptions viewStudents={viewStudents} ViewRecord={ViewRecord} />
+        {choice === 1 ? (
+          <div>
+            <h4 className="fw-bold me-5 mb-3 text-start">| YOUR STUDENTS</h4>
+            <StudentsActionTable
+              selectedStudents={selectedStudents}
+              DeleteStudent={DeleteStudent}
             />
           </div>
-          <StudentsMarksTable examTypeArray={examTypeArray} />
-        </div>
-      </>
-    );
-  }
-  if (!requiredMarks.length) {
-    return (
-      <>
-        <Navbar tab={3} navNo={1} />
-        <div className="container text-center">
-          <h5 style={{ color: "red", marginTop: "2.5in" }}>No record found!</h5>
-        </div>
-      </>
-    );
-  }
+        ) : choice === 2 ? (
+          <div>
+            <h4 className="fw-bold me-5 text-start">| RECORD</h4>
+            <div className="mb-4">
+              <ExamTypeNavigation
+                ActivityNavDec={ActivityNavDec}
+                ActivityNavInc={ActivityNavInc}
+              />
+            </div>
+            <StudentsMarksTable examTypeArray={examTypeArray} />
+          </div>
+        ) : null}
+      </div>
+    </>
+  );
 };
 
 export default ViewStudents;

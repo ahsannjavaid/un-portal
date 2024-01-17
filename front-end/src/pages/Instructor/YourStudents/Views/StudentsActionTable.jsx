@@ -15,30 +15,36 @@ export default function StudentsActionTable({
         </tr>
       </thead>
       <tbody>
-        {selectedStudents.map((x, ind) => (
-          <tr key={ind}>
-            <th scope="row" style={{ color: "#4D3189" }}>
-              {++ind}
-            </th>
-            <td>
-              {x.fname} {x.lname}
-            </td>
-            <td>{x.studentID}</td>
-            <td>
-              <button
-                onClick={() => DeleteStudent(x._id)}
-                className="btn pt-0 pb-0 ps-1 pe-1"
-              >
-                <img
-                  src="./images/delete.png"
-                  alt="delete"
-                  width={"20px"}
-                  height={"20px"}
-                />
-              </button>
-            </td>
+        {selectedStudents.length ? (
+          selectedStudents.map((x, ind) => (
+            <tr key={ind}>
+              <th scope="row" style={{ color: "#4D3189" }}>
+                {++ind}
+              </th>
+              <td>
+                {x.fname} {x.lname}
+              </td>
+              <td>{x.studentID}</td>
+              <td>
+                <button
+                  onClick={() => DeleteStudent(x._id)}
+                  className="btn pt-0 pb-0 ps-1 pe-1"
+                >
+                  <img
+                    src="./images/delete.png"
+                    alt="delete"
+                    width={"20px"}
+                    height={"20px"}
+                  />
+                </button>
+              </td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td>No record found.</td>
           </tr>
-        ))}
+        )}
       </tbody>
     </table>
   );

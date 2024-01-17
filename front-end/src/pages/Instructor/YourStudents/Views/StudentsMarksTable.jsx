@@ -25,18 +25,24 @@ export default function StudentsMarksTable({ examTypeArray }) {
         </tr>
       </thead>
       <tbody>
-        {examTypeArray.selectedStudents.map((x, ind) => (
-          <tr key={ind}>
-            <th scope="row" style={{ color: "#4D3189" }}>
-              {++ind}
-            </th>
-            <td>{x.studentID}</td>
-            <td>
-              {x.fname} {x.lname}
-            </td>
-            <td>{x.marks}</td>
+        {examTypeArray.selectedStudents.length ? (
+          examTypeArray.selectedStudents.map((x, ind) => (
+            <tr key={ind}>
+              <th scope="row" style={{ color: "#4D3189" }}>
+                {++ind}
+              </th>
+              <td>{x.studentID}</td>
+              <td>
+                {x.fname} {x.lname}
+              </td>
+              <td>{x.marks}</td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td>No record found.</td>
           </tr>
-        ))}
+        )}
       </tbody>
     </table>
   );
