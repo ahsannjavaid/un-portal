@@ -20,6 +20,8 @@ const InstructorLogin = () => {
       });
       alert(data?.message);
       if (data.success) {
+        localStorage.setItem("data", JSON.stringify(data.data));
+        localStorage.setItem("id", data.data._id);
         localStorage.setItem("firstName", data.data.fname);
         localStorage.setItem("email", data.data.email);
         localStorage.setItem("subject", data.data.subject);

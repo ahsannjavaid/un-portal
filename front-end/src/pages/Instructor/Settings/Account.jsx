@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { BASE_URL } from "../../../services/config";
+import React, { useState } from "react";
 import Navbar from "../../../components/Navbar";
 import InstructorForm from "./Views/InstructorForm";
 import InstructorInformation from "./Views/InstructorInformation";
+import { fetchResponse } from "../../../services/service";
+import { instructorEndpoints } from "../../../services/endpoints/instructorEndpoints";
 
 const Account = () => {
-  const localEmail = localStorage.getItem("email");
-  const [instructors, setInstructors] = useState([]);
+  const thisData = JSON.parse(localStorage.getItem("data"));
+
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
   const [email, setEmail] = useState("");
@@ -14,41 +15,27 @@ const Account = () => {
   const [subject, setSubject] = useState("");
   const [_id, set_id] = useState(0);
 
-  const getInstructors = async () => {
-    let result = await fetch(`${BASE_URL}instructors-details`);
-    result = await result.json();
-    if (result) {
-      setInstructors(result);
-    } else {
-      console.log("Instructors-details not found!");
-    }
-  };
-
-  useEffect(() => {
-    getInstructors();
-  }, []);
-
   const fillForm = () => {
-    for (let i = 0; i < instructors.length; i++) {
-      if (instructors[i].email === localEmail) {
-        setFname(instructors[i].fname);
-        setLname(instructors[i].lname);
-        setEmail(instructors[i].email);
-        setPassword(instructors[i].password);
-        setSubject(instructors[i].subject);
-        set_id(instructors[i]._id);
-      }
-    }
+    setFname(thisData.fname);
+    setLname(thisData.lname);
+    setEmail(thisData.email);
+    setPassword(thisData.password);
+    setSubject(thisData.subject);
+    set_id(thisData._id);
   };
 
-  const UpdateInstructor = () => {
-    fetch(`${BASE_URL}instructor-details/${_id}`, {
-      method: "put",
-      body: JSON.stringify({ fname, lname, email, password, subject }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  const UpdateInstructor = async () => {
+    try {
+      const data = await fetchResponse(
+        instructorEndpoints.editInstructor(_id),
+        2,
+        { fname, lname, email, password, subject }
+      );
+      alert(data.message);
+      localStorage.setItem("data", JSON.stringify(data.data));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

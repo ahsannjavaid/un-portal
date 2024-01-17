@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import SignupForm from "./Views/SignupForm";
 import Instructions from "./Views/Instructions";
 import Header from "../../../components/Header";
-import {instructorEndpoints} from "../../../services/endpoints/instructorEndpoints";
-import {fetchResponse} from "../../../services/service";
+import { instructorEndpoints } from "../../../services/endpoints/instructorEndpoints";
+import { fetchResponse } from "../../../services/service";
 
 const Instructor = () => {
   const navigate = useNavigate();
@@ -20,13 +20,19 @@ const Instructor = () => {
 
   const registerInstructor = async () => {
     try {
-      const data = await fetchResponse(instructorEndpoints.registerInstructor(), 1, {fname, lname, email, password, subject})
+      const data = await fetchResponse(
+        instructorEndpoints.registerInstructor(),
+        1,
+        { fname, lname, email, password, subject }
+      );
       alert(data.message);
       if (data.success) {
+        localStorage.setItem("data", JSON.stringify(data.data));
+        localStorage.setItem("id", data.data._id);
         localStorage.setItem("firstName", fname);
-          localStorage.setItem("email", email);
-          localStorage.setItem("subject", subject);
-          navigate("/instructor-interface");
+        localStorage.setItem("email", email);
+        localStorage.setItem("subject", subject);
+        navigate("/instructor-interface");
       }
     } catch (error) {
       console.log(error);
