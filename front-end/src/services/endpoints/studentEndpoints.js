@@ -9,6 +9,8 @@ export const studentEndpoints = {
 
   getParticularStudents: (email) => `${BASE_URL}get-particular-students?email=${email}`,
 
+  getMarksOfParticularStudent: (id) => `${BASE_URL}get-particular-student-marks/${id}`,
+
   editStudent: (id) => `${BASE_URL}student-details/${id}`,
 
   deleteSingleStudent: (id) => `${BASE_URL}student-details/${id}`,

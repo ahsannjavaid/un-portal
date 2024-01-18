@@ -26,10 +26,10 @@ export default function StudentMarksTable({
                 {x.examType} {x.activityNumber}
               </b>
             </td>
-            <td>{x.weightage}</td>
-            <td style={{ color: "#4D3189" }}>{x.obtWeightage}</td>
+            <td>{x.weightage.toFixed(2)}</td>
+            <td style={{ color: "#4D3189" }}>{(x.marks * x.weightage / x.points).toFixed(2)}</td>
             <td>{x.points}</td>
-            <td style={{ color: "#4D3189" }}>{x.selectedStudents}</td>
+            <td style={{ color: "#4D3189" }}>{x.marks ?? "-"}</td>
           </tr>
         ))}
       </tbody>

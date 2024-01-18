@@ -11,10 +11,10 @@ export default function SubjectNavigation({
       style={{ color: "#4D3189" }}
       aria-label="Default select example"
     >
-      <option className="fw-bold">Select Subject</option>
-      {studentSubjects.map((x, ind) => (
-        <option key={ind} value={x.instructorSubject}>
-          {x.instructorSubject}
+      <option className="fw-bold" value={""}>Select Subject</option>
+      {studentSubjects.map((subject, ind) => (
+        <option key={ind} value={subject}>
+          {subject}
         </option>
       ))}
     </select>
