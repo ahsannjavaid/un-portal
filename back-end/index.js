@@ -1,5 +1,4 @@
 // "start": "node index.js"
-// "start": "nodemon index.js"
 const express = require("express");
 const cors = require("cors");
 require("./db/config");
