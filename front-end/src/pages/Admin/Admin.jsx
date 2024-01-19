@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { BASE_URL } from "../../services/config";
 import InstructorsTable from "./Views/InstructorsTable";
 import PaginationNavigation from "./Views/PaginationNavigation";
 import Header from "../../components/Header";
+import LoadingSpinner from "../../components/LoadingSpinner";
+import { fetchResponse } from "../../services/service";
+import { instructorEndpoints } from "../../services/endpoints/instructorEndpoints";
 
 const Admin = () => {
   const [instructors, setInstructors] = useState([]);
@@ -14,24 +16,30 @@ const Admin = () => {
   let [compensate, setCompensate] = useState(0);
   let [chk, setChk] = useState(true);
   let [serialNum, setSerialNum] = useState(1);
-
-  const getInstructors = async () => {
-    let result = await fetch(`${BASE_URL}instructors-details`);
-    result = await result.json();
-    if (result) {
-      setInstructors(result);
-    } else {
-      console.log("Check your Internet connection!");
-    }
-  };
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const getInstructors = async () => {
+      try {
+        const data = await fetchResponse(
+          instructorEndpoints.getInstructors(),
+          0,
+          null
+        );
+        if (data.success) {
+          setInstructors(data.data);
+          setInstructorsPerPage(data.data.slice(pgStart, pgEnd));
+        }
+        alert(data.message);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false);
+      }
+    };
     getInstructors();
+    // eslint-disable-next-line
   }, []);
-
-  const viewUsers = () => {
-    setInstructorsPerPage(instructors.slice(pgStart, pgEnd));
-  };
 
   const pageIncrement = () => {
     if (pgStart + 10 < instructors.length) {
@@ -71,35 +79,38 @@ const Admin = () => {
     setInstructorsPerPage(instructors.slice(pgStart, pgEnd));
   };
 
-  const DeleteInstructor = (id) => {
-    fetch(`${BASE_URL}instructor-details/${id}`, {
-      method: "delete",
-    });
-    alert("Successfully deleted!");
-    window.location.reload();
+  const DeleteInstructor = async (id) => {
+    setIsLoading(true);
+    try {
+      const data = await fetchResponse(
+        instructorEndpoints.deleteInstructor(id),
+        3,
+        null
+      );
+      if (data.success) {
+        let duplicateArray = [...instructorsPerPage];
+        setInstructorsPerPage(duplicateArray.filter((instructor) => instructor._id !== id));
+        let duplicateArray2 = [...instructors];
+        setInstructors(duplicateArray2.filter((instructor) => instructor._id !== id));
+      }
+      alert(data.message);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
   };
+
+  if (isLoading) return <LoadingSpinner />;
 
   return (
     <>
       <div className="container">
         <Header />
-        <div className="row">
-          <div className="col-6">
-            <h4 className="text-start fw-bolder mb-5 mt-2">
-              <span style={{ color: "red" }}>Secret Page</span> | Instructors'
-              Information
-            </h4>
-          </div>
-          <div className="col-6 text-end">
-            <button
-              onClick={viewUsers}
-              className="btn"
-              style={{ backgroundColor: "#4D3189", color: "white" }}
-            >
-              View Users
-            </button>
-          </div>
-        </div>
+        <h4 className="text-start fw-bolder mb-5 mt-2">
+          <span style={{ color: "red" }}>Secret Page</span> | Instructors'
+          Information
+        </h4>
         <InstructorsTable
           serialNum={serialNum}
           instructorsPerPage={instructorsPerPage}

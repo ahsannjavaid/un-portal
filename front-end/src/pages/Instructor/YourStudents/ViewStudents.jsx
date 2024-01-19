@@ -112,11 +112,11 @@ const ViewStudents = () => {
         3,
         null
       );
-      alert(data.message);
       if (data.success) {
         let duplicateArray = [...selectedStudents];
         setSelectedStudents(duplicateArray.filter((std) => std._id !== id));
       }
+      alert(data.message);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
