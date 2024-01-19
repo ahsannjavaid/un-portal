@@ -1,0 +1,7 @@
+button:hover {
+  background-color: silver;
+}
+
+:root {
+--base-color: #4D3189;
+}

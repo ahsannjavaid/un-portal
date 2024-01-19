@@ -1,0 +1,92 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Disallow:
+
+---------------------------------------------------------------------------------
+
+let [pgNum, setPageNum] = useState(1)
+  let [pgGroup, setPgGroup] = useState(0)
+  let [pgGroupLoop, setPgGroupLoop] = useState(10)
+  let [compensate,setCompensate] = useState(0)
+  let [chk,setChk] = useState(true)
+  let instructorsPerPage = []
+  let u = 0
+
+
+u = 0
+  for (let i = pgGroup; i < pgGroupLoop; i++) {
+    instructorsPerPage[u++] = instructors[i]
+  }
+
+  const pageIncrement = () => {
+    if ((pgGroupLoop + 10) < instructors.length) {
+      pgGroupLoop += 10
+    }
+    else {
+      if (chk)
+      {
+      pgGroupLoop += 10
+      compensate = pgGroupLoop - instructors.length
+      pgGroupLoop -= compensate
+      setCompensate(compensate)
+      setChk(false)
+    }
+    }
+    if (pgGroup + 10 < instructors.length) {
+      pgGroup += 10
+    }
+    if (pgNum < Math.round(instructors.length / 10)) {
+      pgNum++
+    }
+    setPageNum(pgNum)
+    setPgGroup(pgGroup)
+    setPgGroupLoop(pgGroupLoop)
+  }
+
+  const pageDecrement = () => {
+    if (pgNum > 1) {
+      pgNum--
+    }
+    if (pgGroup > 0) {
+      pgGroup -= 10
+    }
+    if (pgGroupLoop > 10)
+    {
+      pgGroupLoop -= (10-compensate)
+      compensate = 0
+      setCompensate(compensate)
+    }
+    setPageNum(pgNum)
+    setPgGroup(pgGroup)
+    setPgGroupLoop(pgGroupLoop)
+  }
+
+
+
+const students = [
+  {
+    quiz: 0,
+    assignment: 0,
+    lab_work: 0
+  },
+  {
+    quiz: 0,
+    assignment: 0,
+    lab_work: 0
+  },
+  {
+    quiz: 0,
+    assignment: 0,
+    lab_work: 0
+  },
+  {
+    quiz: 0,
+    assignment: 0,
+    lab_work: 0
+  }
+]
+students.map((x,ind) =>
+<h1>{x.quiz}</h1>
+<h1>{x.assignment}</h1>
+<h1>{x.lab_work}</h1>
+)
