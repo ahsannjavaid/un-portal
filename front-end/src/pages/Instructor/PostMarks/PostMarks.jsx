@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../../components/Navbar";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 import CharacteristicsForm from "./Views/CharacteristicsForm";
 import StudentsTable from "./Views/StudentsTable";
 import { fetchResponse } from "../../../services/service";
@@ -17,21 +18,31 @@ const PostMarks = () => {
   const [activityNumber, setActivityNumber] = useState(null);
   const [weightage, setWeightage] = useState(null);
   const [points, setPoints] = useState(null);
+  const [showingStudents, setShowingStudents] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const viewStudents = async () => {
-    try {
-      const data = await fetchResponse(
-        studentEndpoints.getParticularStudents(instructorEmail),
-        0,
-        null
-      );
-      setSelectedStudents(data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  useEffect(() => {
+    const getStudents = async () => {
+      setIsLoading(true);
+      try {
+        const data = await fetchResponse(
+          studentEndpoints.getParticularStudents(instructorEmail),
+          0,
+          null
+        );
+        setSelectedStudents(data.data);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false);
+      }
+    };
+    getStudents()
+    setIsLoading(false);
+  }, [instructorEmail]);
 
   const PostResult = async () => {
+    setIsLoading(true);
     try {
       const data = await fetchResponse(examEndpoints.postMarks(), 1, {
         examType,
@@ -44,10 +55,14 @@ const PostMarks = () => {
         selectedStudents,
       });
       alert(data.message);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
+
+  if(isLoading) return <LoadingSpinner />
 
   return (
     <>
@@ -66,7 +81,7 @@ const PostMarks = () => {
                 setExamType={setExamType}
                 setPoints={setPoints}
                 setWeightage={setWeightage}
-                viewStudents={viewStudents}
+                viewStudents={() => setShowingStudents(true)}
               />
             </div>
           </div>
@@ -92,7 +107,7 @@ const PostMarks = () => {
                 </div>
               </div>
             </h3>
-            <StudentsTable selectedStudents={selectedStudents} />
+            {showingStudents ? <StudentsTable selectedStudents={selectedStudents} points={points} /> : null}
           </div>
         </div>
       </div>

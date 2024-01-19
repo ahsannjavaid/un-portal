@@ -5,16 +5,19 @@ import LoginForm from "./Views/LoginForm";
 import Header from "../../../components/Header";
 import { fetchResponse } from "../../../services/service";
 import { studentEndpoints } from "../../../services/endpoints/studentEndpoints";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 
 const Student = () => {
   const navigate = useNavigate();
 
   const [studentID, setStudentID] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   localStorage.clear();
 
   const CheckStudent = async () => {
+    setIsLoading(true);
     try {
       const data = await fetchResponse(studentEndpoints.loginStudent(), 1, {
         studentID,
@@ -27,10 +30,14 @@ const Student = () => {
         localStorage.setItem("studentID", data.data.studentID);
         navigate("/student-interface");
       }
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
+
+  if(isLoading) return <LoadingSpinner />
 
   return (
     <div className="container">

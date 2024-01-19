@@ -5,6 +5,7 @@ import StudentForm from "./Views/StudentForm";
 import StudentInformation from "./Views/StudentInformation";
 import { studentEndpoints } from "../../../services/endpoints/studentEndpoints";
 import { fetchResponse } from "../../../services/service";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 
 const AccountS = () => {
   const thisData = JSON.parse(localStorage.getItem("data"));
@@ -15,6 +16,7 @@ const AccountS = () => {
   let [_id, set_id] = useState();
   const [password, setPassword] = useState("");
   let [requiredInstructors, setRequiredInstructors] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fillForm = () => {
     setFname(thisData.fname);
@@ -26,6 +28,7 @@ const AccountS = () => {
   };
 
   const UpdateStudent = async () => {
+    setIsLoading(true);
     try {
       const data = await fetchResponse(studentEndpoints.editStudent(_id), 2, {
         fname,
@@ -38,10 +41,14 @@ const AccountS = () => {
         "data",
         JSON.stringify({ ...thisData, fname, lname, password })
       );
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
+
+  if(isLoading) return <LoadingSpinner />
 
   return (
     <>

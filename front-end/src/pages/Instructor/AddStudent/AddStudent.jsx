@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../../components/Navbar";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 import StudentRegistrationForm from "./Views/StudentRegistrationForm";
 import { fetchResponse } from "../../../services/service";
 import { studentEndpoints } from "../../../services/endpoints/studentEndpoints";
@@ -10,6 +11,7 @@ const AddStudent = () => {
 
   const instructorEmail = localStorage.getItem("email");
   const instructorSubject = localStorage.getItem("subject");
+  const [isLoading, setIsLoading] = useState(false);
 
   let marks = "";
   const [fname, setFname] = useState("");
@@ -18,6 +20,7 @@ const AddStudent = () => {
   const [password, setPassword] = useState("");
 
   const registerStudent = async () => {
+    setIsLoading(true);
     try {
       const data = await fetchResponse(studentEndpoints.registerStudent(), 1, {
         fname,
@@ -32,10 +35,14 @@ const AddStudent = () => {
       if (data.success) {
         navigate("/view-students");
       }
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
+
+  if(isLoading) return <LoadingSpinner />
 
   return (
     <>

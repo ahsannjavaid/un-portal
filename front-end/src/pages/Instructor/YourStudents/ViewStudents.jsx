@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import Navbar from "../../../components/Navbar";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 import ExamTypeNavigation from "./Views/ExamTypeNavigation";
 import StudentsMarksTable from "./Views/StudentsMarksTable";
 import StudentsActionTable from "./Views/StudentsActionTable";
@@ -18,6 +19,7 @@ const ViewStudents = () => {
   let [examTypeArray, setExamTypeArray] = useState([]);
   const [choice, setChoice] = useState(0);
   let [index, setIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function getStudents() {
@@ -46,6 +48,7 @@ const ViewStudents = () => {
     }
     getStudents();
     getMarks();
+    setIsLoading(false);
   }, [instructorEmail]);
 
   function viewStudents() {
@@ -102,6 +105,7 @@ const ViewStudents = () => {
   };
 
   const DeleteStudent = async (id) => {
+    setIsLoading(true);
     try {
       const data = await fetchResponse(
         studentEndpoints.deleteSingleStudent(id),
@@ -113,10 +117,14 @@ const ViewStudents = () => {
         let duplicateArray = [...selectedStudents];
         setSelectedStudents(duplicateArray.filter((std) => std._id !== id));
       }
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
+
+  if (isLoading) return <LoadingSpinner />;
 
   return (
     <>

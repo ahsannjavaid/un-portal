@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginForm from "./Views/LoginForm";
 import Header from "../../../components/Header";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 import { instructorEndpoints } from "../../../services/endpoints/instructorEndpoints";
 import { fetchResponse } from "../../../services/service";
 
@@ -11,13 +12,19 @@ const InstructorLogin = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const loginCheck = async () => {
+    setIsLoading(true);
     try {
-      const data = await fetchResponse(instructorEndpoints.loginInstructor(), 1, {
-        email,
-        password,
-      });
+      const data = await fetchResponse(
+        instructorEndpoints.loginInstructor(),
+        1,
+        {
+          email,
+          password,
+        }
+      );
       alert(data?.message);
       if (data.success) {
         localStorage.setItem("data", JSON.stringify(data.data));
@@ -27,10 +34,14 @@ const InstructorLogin = () => {
         localStorage.setItem("subject", data.data.subject);
         navigate("/instructor-interface");
       }
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
+
+  if (isLoading) return <LoadingSpinner />;
 
   return (
     <>

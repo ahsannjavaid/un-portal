@@ -60,7 +60,7 @@ export default function StudentForm({
       <fieldset>
         <h6>Instructors and Subjects <span className="fw-normal fst-italic">(Not for editing)</span></h6>
         <select className="form-select">
-          {requiredInstructors.map((x, ind) => (
+          {requiredInstructors?.map((x, ind) => (
             <option key={ind}>
               {x.fname} {x.lname} - {x.subject}
             </option>

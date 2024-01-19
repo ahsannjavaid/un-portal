@@ -32,7 +32,7 @@ export default function LoginForm({
         <button
           onClick={CheckStudent}
           className="btn btn-outline fw-bold"
-          type="button"
+          type="submit"
           style={{ color: "#4D3189", borderColor: "#4D3189" }}
         >
           LOGIN

@@ -5,12 +5,14 @@ import SubjectNavigation from "./Views/SubjectNavigation";
 import StudentMarksTable from "./Views/StudentMarksTable";
 import { fetchResponse } from "../../../services/service";
 import { studentEndpoints } from "../../../services/endpoints/studentEndpoints";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 
 const Marks = () => {
   const studentID = localStorage.getItem("studentID");
 
   const [exams, setExams] = useState([]);
   const [recordSubject, setRecordSubject] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function getExams() {
@@ -23,13 +25,17 @@ const Marks = () => {
         if (data.success) {
           setExams(data.data);
         }
+        setIsLoading(false);
       } catch (error) {
         console.log(error);
+        setIsLoading(false);
       }
     }
 
     getExams();
   }, [studentID]);
+
+  if(isLoading) return <LoadingSpinner />
 
   return (
     <>

@@ -6,6 +6,7 @@ import Instructions from "./Views/Instructions";
 import Header from "../../../components/Header";
 import { instructorEndpoints } from "../../../services/endpoints/instructorEndpoints";
 import { fetchResponse } from "../../../services/service";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 
 const Instructor = () => {
   const navigate = useNavigate();
@@ -15,10 +16,12 @@ const Instructor = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [subject, setSubject] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   localStorage.clear();
 
   const registerInstructor = async () => {
+    setIsLoading(true);
     try {
       const data = await fetchResponse(
         instructorEndpoints.registerInstructor(),
@@ -34,10 +37,14 @@ const Instructor = () => {
         localStorage.setItem("subject", subject);
         navigate("/instructor-interface");
       }
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
+
+  if(isLoading) return <LoadingSpinner />
 
   return (
     <>
