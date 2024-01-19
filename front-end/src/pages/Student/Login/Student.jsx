@@ -22,6 +22,7 @@ const Student = () => {
       });
       alert(data?.message);
       if (data.success) {
+        localStorage.setItem("data", JSON.stringify(data.data));
         localStorage.setItem("fname", data.data.fname);
         localStorage.setItem("studentID", data.data.studentID);
         navigate("/student-interface");

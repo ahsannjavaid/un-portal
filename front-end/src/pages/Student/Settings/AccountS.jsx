@@ -1,95 +1,46 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import { BASE_URL } from "../../../services/config";
+import { useState } from "react";
 import Navbar from "../../../components/Navbar";
 import StudentForm from "./Views/StudentForm";
 import StudentInformation from "./Views/StudentInformation";
+import { studentEndpoints } from "../../../services/endpoints/studentEndpoints";
+import { fetchResponse } from "../../../services/service";
 
 const AccountS = () => {
-  const localStudentID = localStorage.getItem("studentID");
-
-  let studentSubjects = [];
-  let studentInstructorsObjects = [];
-  let studentsInstructorEmail = [];
+  const thisData = JSON.parse(localStorage.getItem("data"));
 
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
   const [studentID, setStudentID] = useState();
   let [_id, set_id] = useState();
   const [password, setPassword] = useState("");
-  const [students, setStudents] = useState([]);
-  const [instructors, setInstructors] = useState([]);
   let [requiredInstructors, setRequiredInstructors] = useState([]);
 
-  const getStudents = async () => {
-    let result = await fetch(`${BASE_URL}students-details`);
-    result = await result.json();
-    if (result) {
-      setStudents(result);
-    } else {
-      console.log("Instructors-details not found!");
-    }
-  };
-
-  const getInstructors = async () => {
-    let result = await fetch(`${BASE_URL}instructors-details`);
-    result = await result.json();
-    if (result) {
-      setInstructors(result);
-    } else {
-      console.log("Instructors-details not found!");
-    }
-  };
-
-  useEffect(() => {
-    getStudents();
-    getInstructors();
-  }, []);
-
   const fillForm = () => {
-    let check = true;
-    for (let i = 0; i < students.length; i++) {
-      if (students[i].studentID === parseInt(localStudentID)) {
-        check = true;
-        setFname(students[i].fname);
-        setLname(students[i].lname);
-        setStudentID(students[i].studentID);
-        setPassword(students[i].password);
-        _id = students[i]._id;
-        set_id(_id);
-        for (let j = 0; j < studentSubjects.length + 1; j++) {
-          if (studentSubjects[j] === students[i].instructorSubject) {
-            check = false;
-          }
-        }
-        if (check) {
-          studentSubjects.push(students[i].instructorSubject);
-          studentsInstructorEmail.push(students[i].instructorEmail);
-        }
-      }
-    }
-    // getting student's instructors name...
-    let a = 0;
-    for (let u = 0; u < studentsInstructorEmail.length; u++) {
-      for (let v = 0; v < instructors.length; v++) {
-        if (studentsInstructorEmail[u] === instructors[v].email) {
-          studentInstructorsObjects[a++] = { ...instructors[v] };
-        }
-      }
-    }
-    requiredInstructors = studentInstructorsObjects;
-    setRequiredInstructors(requiredInstructors);
+    setFname(thisData.fname);
+    setLname(thisData.lname);
+    setStudentID(thisData.studentID);
+    setPassword(thisData.password);
+    set_id(thisData._id);
+    setRequiredInstructors(thisData.instructors);
   };
 
-  const UpdateStudent = () => {
-    fetch(`${BASE_URL}student-details/${_id}`, {
-      method: "put",
-      body: JSON.stringify({ fname, lname, password, studentID }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    alert("Successfully updated!");
+  const UpdateStudent = async () => {
+    try {
+      const data = await fetchResponse(studentEndpoints.editStudent(_id), 2, {
+        fname,
+        lname,
+        password,
+        studentID,
+      });
+      alert(data.message);
+      localStorage.setItem(
+        "data",
+        JSON.stringify({ ...thisData, fname, lname, password })
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
