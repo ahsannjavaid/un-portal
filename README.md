@@ -18,6 +18,19 @@ UN Portal is basically a student portal where students can see their Academic in
 * Admin authorities are also added (The only admin can delete any instructor)
 
 
+# Hosting
+
+I have used free services for the hosting of this project.
+
+## Client (Front-end)
+
+The front-end has been hosted on [Netlify](netlify.com).
+
+## Server (Back-end)
+
+The back-end has been hosted on [Render](render.com).
+
+
 # Server: Node.js, Express.js and MongoDB
 
 ## Available Scripts
