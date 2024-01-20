@@ -3,7 +3,7 @@ import Navbar from '../../../components/Navbar'
 import Carousel from '../../../components/Carousel'
 
 const InstructorInterface = () => {
-  const firstName = localStorage.getItem('firstName')
+  const firstName = JSON.parse(localStorage.getItem('data')).fname;
   return (
     <>
       <Navbar 

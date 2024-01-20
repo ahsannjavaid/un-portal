@@ -3,8 +3,8 @@ import Carousel from "../../../components/Carousel";
 import Navbar from "../../../components/Navbar";
 
 const StudentInterface = () => {
-  const firstName = localStorage.getItem("fname");
-  const studentID = localStorage.getItem("studentID");
+  const firstName = JSON.parse(localStorage.getItem('data')).fname;
+  const studentID = JSON.parse(localStorage.getItem('data')).studentID;
 
   return (
     <>
