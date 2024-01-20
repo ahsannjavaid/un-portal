@@ -24,11 +24,11 @@ I have used free services for the hosting of this project.
 
 ## Client (Front-end)
 
-The front-end has been hosted on [Netlify](netlify.com).
+The front-end has been hosted on [Netlify](https://www.netlify.com/).
 
 ## Server (Back-end)
 
-The back-end has been hosted on [Render](render.com).
+The back-end has been hosted on [Render](https://www.render.com/).
 
 
 # Server: Node.js, Express.js and MongoDB
