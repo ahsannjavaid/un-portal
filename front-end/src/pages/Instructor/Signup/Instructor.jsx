@@ -17,6 +17,7 @@ const Instructor = () => {
   const [password, setPassword] = useState("");
   const [subject, setSubject] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [ serverStarted, setServerStarted ] = useState(sessionStorage.getItem("serverStarted") ? true : false);
 
   localStorage.clear();
 
@@ -37,6 +38,8 @@ const Instructor = () => {
         localStorage.setItem("subject", subject);
         navigate("/instructor-interface");
       }
+      setServerStarted(true);
+      sessionStorage.setItem("serverStarted", 1);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -44,7 +47,7 @@ const Instructor = () => {
     }
   };
 
-  if(isLoading) return <LoadingSpinner />
+  if(isLoading) return <LoadingSpinner showingApologoies={!serverStarted ? true : false} />
 
   return (
     <>

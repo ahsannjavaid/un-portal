@@ -13,6 +13,7 @@ const Student = () => {
   const [studentID, setStudentID] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [ serverStarted, setServerStarted ] = useState(sessionStorage.getItem("serverStarted") ? true : false);
 
   localStorage.clear();
 
@@ -30,6 +31,8 @@ const Student = () => {
         localStorage.setItem("studentID", data.data.studentID);
         navigate("/student-interface");
       }
+      setServerStarted(true);
+      sessionStorage.setItem("serverStarted", 1);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -37,7 +40,7 @@ const Student = () => {
     }
   };
 
-  if(isLoading) return <LoadingSpinner />
+  if(isLoading) return <LoadingSpinner showingApologoies={!serverStarted ? true : false} />
 
   return (
     <div className="container">
