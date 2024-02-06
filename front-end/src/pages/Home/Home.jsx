@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Card from "./Views/Card";
+import { homeEndpoints } from "../../services/endpoints/homeEndpoints";
+import { fetchResponse } from "../../services/service";
 
 const Home = () => {
   let instructorImage = "./images/instructor.jpg";
   let studentImage = "./images/student.jpg";
+
+  useEffect(() => {
+    async function startServer() {
+      try {
+        await fetchResponse(homeEndpoints.home(), 0, null);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    startServer();
+  }, []);
 
   return (
     <div className="container">
