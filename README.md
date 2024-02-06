@@ -18,6 +18,25 @@ UN Portal is basically a student portal where students can see their Academic in
 * Admin authorities are also added (The only admin can delete any instructor)
 
 
+# Technology Used
+
+MERN Stack
+
+## Client/Frontend
+
+* React.js
+* Bootstrap 5
+
+## Server/Backend
+
+* Express.js
+* Node.js
+
+## Database
+
+* MongoDB
+
+
 # Hosting
 
 I have used free services for the hosting of this project.
